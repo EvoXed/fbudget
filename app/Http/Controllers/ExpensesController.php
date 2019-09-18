@@ -6,7 +6,6 @@ use App\Expense;
 use App\Purpose;
 use App\User;
 use Illuminate\Http\Request;
-use mysql_xdevapi\Session;
 
 class ExpensesController extends Controller
 {
@@ -53,12 +52,20 @@ class ExpensesController extends Controller
      */
     public function store(Request $request, Expense $expense)
     {
-        /*$rules = [
+        $request->validate([
+            'user_id' => 'required|numeric',
             'date' => 'required|date',
-            'purpose' => 'required|max:20',
-            'amount' => 'required|numeric|max:10'
-        ];
-        $this->validate($request, $rules);*/
+            'purpose_id' => 'required|max:20',
+            'amount' => 'required|numeric'
+        ]);
+
+        $request->amount *= 100;
+
+        if ($expense->create($request->all())) {
+            return response()->json('Ok!');
+        }
+
+        return response()->json('Expense fail created', 400);
     }
 
     /**
@@ -103,6 +110,10 @@ class ExpensesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Expense::destroy($id)) {
+            return response()->json('Expense was deleted');
+        }
+
+        return response()->json('Expense not deleted', 400);
     }
 }

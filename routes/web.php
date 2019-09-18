@@ -15,6 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/expenses', 'ExpensesController');
-
 Auth::routes();
+
+Route::resource('/expenses', 'ExpensesController');

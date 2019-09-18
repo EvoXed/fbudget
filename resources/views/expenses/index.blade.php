@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-2">
-            <button type="button" class="btn btn-success">Добавить</button>
+            <a class="btn btn-success" href="{{ route('expenses.create') }}" role="button">Добавить</a>
         </div>
     </div>
     <div class="row row justify-content-center mt-3">
@@ -27,10 +27,14 @@
                         <td>{{ number_format($expense['amount']/100, 2) }}</td>
                         <td>{{ $expense['user']->name }}</td>
                         <td>
-                            <a href="{{ route('expenses.edit', $expense['id']) }}"><i class="fa fa-pencil"
-                                aria-hidden="true"></i></a> |
-                            <a href="{{ route('expenses.destroy', $expense['id']) }}"><i class="fa fa-trash"
-                                                                                         aria-hidden="true"></i></a>
+                            <a class="btn btn-warning float-left mr-1" href="{{ route('expenses.edit', $expense['id']) }}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                            <form action="{{ route('expenses.destroy', $expense['id']) }}" method="post">
+                                {{ csrf_field() }}
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
