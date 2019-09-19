@@ -8,17 +8,20 @@
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             <div class="form-group">
                 <label for="date">Date</label>
-                <input type="date" class="form-control" name="date" id="date" placeholder="Date">
+                <input type="date" class="form-control" name="date" id="date" value="{{ date('Y-m-d') }}">
             </div>
             <div class="form-group">
                 <label for="purpose">Purpose</label>
                 <select class="custom-select" name="purpose_id" id="purpose">
-                    <option selected></option>
+                    <option value="0" selected></option>
                 @foreach($purposes as $purpose)
                     <option value="{{ $purpose->id }}">{{ $purpose->purpose }}</option>
                 @endforeach
                 </select>
-                <i class="add fa fa-plus-square" aria-hidden="true"></i>
+            </div>
+            <div class="form-group">
+                <label for="new-purpose">New Purpose</label>
+                <input type="text" class="form-control" name="new_purpose" id="new-purpose" placeholder="New Purpose">
             </div>
             <div class="form-group">
                 <label for="amount">Amount</label>

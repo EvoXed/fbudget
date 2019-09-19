@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Expense;
 use App\Purpose;
-use App\User;
 use Illuminate\Http\Request;
 
 class ExpensesController extends Controller
@@ -56,12 +55,16 @@ class ExpensesController extends Controller
             'user_id' => 'required|numeric',
             'date' => 'required|date',
             'purpose_id' => 'required|max:20',
+            'new_purpose' => 'max:20',
             'amount' => 'required|numeric'
         ]);
-
-        $request->amount *= 100;
-
-        if ($expense->create($request->all())) {
+        $reqData = $request->all();
+        if ($reqData['purpose_id'] == 0 && $reqData['new_purpose']) {
+            $newPurpose = Purpose::create(['purpose' => $reqData['new_purpose']]);
+            $reqData['purpose_id'] = $newPurpose->id;
+        }
+        $reqData['amount'] *= 100;
+        if ($expense->create($reqData)) {
             return response()->json('Ok!');
         }
 
@@ -76,7 +79,7 @@ class ExpensesController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -87,7 +90,9 @@ class ExpensesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['expense'] = Expense::find($id);
+        $data['purposes'] = Purpose::all();
+        return view('expenses.edit', $data);
     }
 
     /**
@@ -99,7 +104,23 @@ class ExpensesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'purpose_id' => 'required|max:20',
+            'new_purpose' => 'max:20',
+            'amount' => 'required|integer'
+        ]);
+        $reqData = $request->only(['date', 'purpose_id', 'amount']);
+        /*if ($reqData['purpose_id'] == 0 && $reqData['new_purpose']) {
+            $newPurpose = Purpose::create(['purpose' => $reqData['new_purpose']]);
+            $reqData['purpose_id'] = $newPurpose->id;
+        }*/
+        $reqData['amount'] *= 100;
+        if (Expense::whereId($id)->update($reqData)) {
+            return response()->json('Ok!');
+        }
+
+        return response()->json('Expense fail updated', 400);
     }
 
     /**
