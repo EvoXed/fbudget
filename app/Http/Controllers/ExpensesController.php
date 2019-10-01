@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Expense;
 use App\Purpose;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ExpensesController extends Controller
 {
@@ -44,9 +45,9 @@ class ExpensesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Expense             $expense
+     * @param \App\Expense $expense
      *
-     * @return void
+     * @return Response
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request, Expense $expense)
@@ -65,7 +66,7 @@ class ExpensesController extends Controller
         }
         $reqData['amount'] *= 100;
         if ($expense->create($reqData)) {
-            return response()->json('Ok!');
+            return redirect('/expense');
         }
 
         return response()->json('Expense fail created', 400);
