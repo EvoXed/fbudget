@@ -1,0 +1,87 @@
+body {
+    background-color: #446544;
+}
+
+.p-item {
+    display: flex;
+    flex-flow: row wrap;
+    padding: 5px;
+    border-bottom: 1px solid #1d2124;
+    background: #000000;
+}
+
+.p-item > .p-icon {
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-size: 12px 12px;
+}
+
+.p-item > .up {
+    background: url("../img/arrow-up-right.svg");
+}
+
+.p-item > .down {
+    background: url("../img/arrow-down-left.svg");
+}
+
+.p-item > div:nth-child(odd) {
+    flex-grow: 1;
+    width: 70%;
+}
+
+.p-item > div:nth-child(even) {
+    text-align: end;
+}
+
+.p-account {
+    flex-direction: column;
+    font-size: 10px;
+    color: dimgrey;
+}
+
+.p-purpose {
+    font-size: 16px;
+    color: whitesmoke;
+}
+
+.p-amount {
+    font-weight: bold;
+}
+
+.p-amount.plus {
+    color: green;
+}
+
+.p-amount.minus {
+    color: darkred;
+}
+
+.p-date {
+    font-size: 10px;
+    bottom: 0;
+    color: darkslategrey;
+}
+
+.p-balance {
+    color: dimgrey;
+    font-size: 12px;
+}
+
+form.form-inline {
+    display: inline;
+}
+
+button.delete {
+    margin: 0;
+    padding: 0;
+    color: #3490dc;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+}
+
+button.delete:hover {
+    color: #1d68a7;
+    text-decoration: underline;
+}

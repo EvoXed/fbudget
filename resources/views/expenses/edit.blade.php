@@ -8,7 +8,7 @@
                 @method('PUT')
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <input type="date" class="form-control" name="date" id="date" value="{{ $expense->date }}">
+                    <input type="date" class="form-control" name="date" id="date" value="{{ date('Y-m-d', strtotime($expense->date)) }}">
                 </div>
                 <div class="form-group">
                     <label for="purpose">Purpose</label>

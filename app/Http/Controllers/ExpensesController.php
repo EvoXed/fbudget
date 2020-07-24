@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Account;
 use App\Expense;
 use App\Purpose;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ExpensesController extends Controller
 {
@@ -20,11 +22,14 @@ class ExpensesController extends Controller
      *
      * @param \App\Expense $expense
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Expense $expense)
     {
-        $data['expenses'] = $expense::with('user', 'purpose')->orderByDesc('date')->get();
+        $data['expenses'] = $expense::with('user', 'purpose', 'account')
+                                ->where('user_id', Auth::user()->id)
+                                ->orderByDesc('date')
+                                ->get();
         return view('expenses.index', $data);
     }
 
@@ -33,11 +38,12 @@ class ExpensesController extends Controller
      *
      * @param \App\Purpose $purpose
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create(Purpose $purpose)
     {
         $data['purposes'] = $purpose::orderByDesc('created_at')->get();
+
         return view('expenses.create', $data);
     }
 
@@ -47,13 +53,12 @@ class ExpensesController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Expense $expense
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request, Expense $expense)
     {
         $request->validate([
-            'user_id' => 'required|numeric',
             'date' => 'required|date',
             'purpose_id' => 'required|max:20',
             'new_purpose' => 'max:20',
@@ -64,9 +69,10 @@ class ExpensesController extends Controller
             $newPurpose = Purpose::create(['purpose' => $reqData['new_purpose']]);
             $reqData['purpose_id'] = $newPurpose->id;
         }
+        $reqData['user_id'] = Auth::user()->id;
         $reqData['amount'] *= 100;
         if ($expense->create($reqData)) {
-            return redirect('/expense');
+            return redirect('/expenses');
         }
 
         return response()->json('Expense fail created', 400);
@@ -87,12 +93,14 @@ class ExpensesController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
         $data['expense'] = Expense::find($id);
         $data['purposes'] = Purpose::all();
+
         return view('expenses.edit', $data);
     }
 
@@ -101,7 +109,8 @@ class ExpensesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -118,7 +127,7 @@ class ExpensesController extends Controller
         }*/
         $reqData['amount'] *= 100;
         if (Expense::whereId($id)->update($reqData)) {
-            return response()->json('Ok!');
+            return redirect('/expenses');
         }
 
         return response()->json('Expense fail updated', 400);
@@ -128,12 +137,13 @@ class ExpensesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         if (Expense::destroy($id)) {
-            return response()->json('Expense was deleted');
+            return redirect('/expenses');
         }
 
         return response()->json('Expense not deleted', 400);

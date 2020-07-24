@@ -5,7 +5,6 @@
     <div class="col-4 offset-4">
         <form action="{{ route('expenses.store') }}" method="post">
             {{ csrf_field() }}
-            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             <div class="form-group">
                 <label for="date">Date</label>
                 <input type="date" class="form-control" name="date" id="date" value="{{ date('Y-m-d') }}">

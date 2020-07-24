@@ -7,39 +7,25 @@
             <a class="btn btn-success" href="{{ route('expenses.create') }}" role="button">Добавить</a>
         </div>
     </div>
-    <div class="row row justify-content-center mt-3">
-        <div class="col-12">
-            <table class="table table-striped table-inverse">
-                <thead class="thead-inverse">
-                <tr>
-                    <th>Date</th>
-                    <th>Purpose</th>
-                    <th>Amount</th>
-                    <th>User</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($expenses as $expense)
-                    <tr>
-                        <td scope="row">{{ $expense['date'] }}</td>
-                        <td>{{ $expense['purpose']->purpose }}</td>
-                        <td>{{ number_format($expense['amount']/100, 2) }}</td>
-                        <td>{{ $expense['user']->name }}</td>
-                        <td>
-                            <a class="btn btn-warning float-left mr-1" href="{{ route('expenses.edit', $expense['id']) }}">
-                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                            </a>
-                            <form action="{{ route('expenses.destroy', $expense['id']) }}" method="post">
-                                {{ csrf_field() }}
-                                @method('DELETE')
-                                <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+    <div class="row justify-content-center mt-3">
+        <div class="col-xl-8 col-lg-9 col-md-10 col-sm-11">
+            @foreach($expenses as $expense)
+            <div class="p-item">
+                <div class="p-account">{{ $expense->account->title }}</div>
+                <div class="p-icon {{ $expense->amount >= 0 ? 'up' : 'down' }}"></div>
+                <div class="p-purpose">{{ $expense->purpose->purpose }}</div>
+                <div class="p-amount {{ $expense->amount >= 0 ? 'plus' : 'minus' }}">{{ number_format($expense->amount/100, 2) }}</div>
+                <div class="p-date">{{ date('d M. Y', strtotime($expense->date)) }}</div>
+                <div class="p-balance">{!! number_format($expense->account->total_amount /100, 2).' '.$expense->account->currency->symbol !!}</div>
+                <div class="actions">
+                    <a href="{{ route('expenses.show', $expense->id) }}">Show</a>
+                    <a href="{{ route('expenses.edit', $expense->id) }}">Edit</a>
+                    {!! Form::open(['class' => 'form-inline', 'method' => 'DELETE', 'route' => ['expenses.destroy', $expense->id]]) !!}
+                        <button class="delete" onclick="return confirm('Are you sure?')">Delete</button>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
 </div>
