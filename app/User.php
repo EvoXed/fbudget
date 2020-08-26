@@ -37,7 +37,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function expense()
+    public function transaction()
     {
         return $this->hasMany('App\Expense');
     }
@@ -45,5 +45,15 @@ class User extends Authenticatable
     public function account()
     {
         return $this->hasMany('App\Account');
+    }
+
+    public function category()
+    {
+        $this->hasMany('App\Category');
+    }
+
+    public function payee()
+    {
+        $this->hasMany('App\Payee');
     }
 }

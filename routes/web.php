@@ -17,4 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::resource('/accounts', 'AccountsController');
 Route::resource('/expenses', 'ExpensesController');
+Route::resource('/transactions', 'TransactionsController');

@@ -86,6 +86,7 @@
 
                 <div class="links">
                     <a href="{{ route('expenses.index') }}">EXPENSES</a>
+                    <a href="{{ route('transactions.index') }}">JOURNAL</a>
                 </div>
             </div>
         </div>

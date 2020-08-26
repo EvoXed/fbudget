@@ -10,6 +10,16 @@ class Currency extends Model
 
     public function expenses()
     {
-        return $this->hasOne('App\Account');
+        return $this->hasMany('App\Account');
+    }
+
+    public function account()
+    {
+        return $this->hasMany('App\Account');
+    }
+
+    public function exchangeRate()
+    {
+        return $this->hasMany('App\CurrencyExchangeRate');
     }
 }

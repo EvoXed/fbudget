@@ -6,17 +6,10 @@ use App\Account;
 use App\Expense;
 use App\Purpose;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class ExpensesController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -27,9 +20,11 @@ class ExpensesController extends Controller
     public function index(Expense $expense)
     {
         $data['expenses'] = $expense::with('user', 'purpose', 'account')
-                                ->where('user_id', Auth::user()->id)
+                                ->where('user_id', $this->userId)
                                 ->orderByDesc('date')
+                                ->orderByDesc('created_at')
                                 ->get();
+
         return view('expenses.index', $data);
     }
 
@@ -51,10 +46,9 @@ class ExpensesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Expense $expense
+     * @param \App\Expense             $expense
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request, Expense $expense)
     {
@@ -69,9 +63,13 @@ class ExpensesController extends Controller
             $newPurpose = Purpose::create(['purpose' => $reqData['new_purpose']]);
             $reqData['purpose_id'] = $newPurpose->id;
         }
-        $reqData['user_id'] = Auth::user()->id;
+        $reqData['user_id'] = $this->userId;
         $reqData['amount'] *= 100;
+        $reqData['account_id'] = 1;
         if ($expense->create($reqData)) {
+            $account = Account::find(1);
+            $account->total_amount += $reqData['amount'];
+            $account->save();
             return redirect('/expenses');
         }
 

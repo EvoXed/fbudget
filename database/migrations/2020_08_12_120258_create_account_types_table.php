@@ -2,10 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeExpensesTableColumn extends Migration
+class CreateAccountTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +13,10 @@ class ChangeExpensesTableColumn extends Migration
      */
     public function up()
     {
-        Schema::table('expenses', function (Blueprint $table) {
-            DB::statement('ALTER TABLE expenses CHANGE `date` `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;');
+        Schema::create('account_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('title', 30);
+            $table->string('orig_name', 30);
         });
     }
 
@@ -26,6 +27,6 @@ class ChangeExpensesTableColumn extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('account_types');
     }
 }

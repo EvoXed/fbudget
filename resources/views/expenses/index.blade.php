@@ -10,13 +10,13 @@
     <div class="row justify-content-center mt-3">
         <div class="col-xl-8 col-lg-9 col-md-10 col-sm-11">
             @foreach($expenses as $expense)
-            <div class="p-item">
-                <div class="p-account">{{ $expense->account->title }}</div>
-                <div class="p-icon {{ $expense->amount >= 0 ? 'up' : 'down' }}"></div>
-                <div class="p-purpose">{{ $expense->purpose->purpose }}</div>
-                <div class="p-amount {{ $expense->amount >= 0 ? 'plus' : 'minus' }}">{{ number_format($expense->amount/100, 2) }}</div>
-                <div class="p-date">{{ date('d M. Y', strtotime($expense->date)) }}</div>
-                <div class="p-balance">{!! number_format($expense->account->total_amount /100, 2).' '.$expense->account->currency->symbol !!}</div>
+            <div class="t-item">
+                <div class="t-account">{{ $expense->account->title }}</div>
+                <div class="t-icon {{ $expense->amount >= 0 ? 'up' : 'down' }}"></div>
+                <div class="t-purpose">{{ $expense->purpose->purpose }}</div>
+                <div class="t-amount {{ $expense->amount >= 0 ? 'plus' : 'minus' }}">{{ number_format($expense->amount/100, 2) }}</div>
+                <div class="t-date">{{ date('d M. Y', strtotime($expense->date)) }}</div>
+                <div class="t-balance">{!! number_format($expense->account->total_amount /100, 2).' '.$expense->account->currency->symbol !!}</div>
                 <div class="actions">
                     <a href="{{ route('expenses.show', $expense->id) }}">Show</a>
                     <a href="{{ route('expenses.edit', $expense->id) }}">Edit</a>
