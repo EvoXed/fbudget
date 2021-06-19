@@ -11,12 +11,16 @@
 |
 */
 
+use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\TransactionsController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
 
-Route::resource('/accounts', 'AccountsController');
-Route::resource('/expenses', 'ExpensesController');
-Route::resource('/transactions', 'TransactionsController');
+Route::resource('/accounts', AccountsController::class);
+Route::resource('/transactions', TransactionsController::class);

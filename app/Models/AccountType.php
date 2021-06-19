@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +13,6 @@ class AccountType extends Model
 
     public function account()
     {
-        return $this->hasMany('App\Account');
+        return $this->hasMany(Account::class);
     }
 }

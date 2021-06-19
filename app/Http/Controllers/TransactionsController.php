@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Account;
-use App\Category;
-use App\RunningBalance;
-use App\Transaction;
+use App\Models\Account;
+use App\Models\Category;
+use App\Models\RunningBalance;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TransactionsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
-     * @param \App\Transaction $transaction
+     * @param Transaction $transaction
      *
-     * @return \Illuminate\Contracts\View\Factory
+     * @return View
      */
     public function index(Transaction $transaction)
     {
@@ -31,10 +33,10 @@ class TransactionsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param \App\Account  $account
-     * @param \App\Category $category
+     * @param Account  $account
+     * @param Category $category
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return View
      */
     public function create(Account $account, Category $category)
     {
@@ -98,9 +100,9 @@ class TransactionsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int              $id
-     * @param \App\Transaction $transaction
+     * @param Transaction $transaction
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
+     * @return View
      */
     public function edit($id)
     {

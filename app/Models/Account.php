@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,26 +26,26 @@ class Account extends Model
 
     public function transaction()
     {
-        return $this->hasMany('App\Transaction');
+        return $this->hasMany(Transaction::class);
     }
 
     public function currency()
     {
-        return $this->belongsTo('App\Currency');
+        return $this->belongsTo(Currency::class);
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function type()
     {
-        return $this->belongsTo('App\AccountType', 'account_type_id');
+        return $this->belongsTo(AccountType::class, 'account_type_id');
     }
 
     public function balance()
     {
-        return $this->hasOne('App\RunningBalance');
+        return $this->hasOne(RunningBalance::class);
     }
 }

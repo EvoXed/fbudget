@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,31 +26,31 @@ class Transaction extends Model
 
     public function from_account()
     {
-        return $this->belongsTo('App\Account', 'from_account_id');
+        return $this->belongsTo(Account::class, 'from_account_id');
     }
 
     public function to_account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     public function category()
     {
-        return $this->belongsTo('App\Category');
+        return $this->belongsTo(Category::class);
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function payee()
     {
-        return $this->belongsTo('App\Payee');
+        return $this->belongsTo(Payee::class);
     }
 
     public function balance()
     {
-        return $this->hasOne('App\RunningBalance');
+        return $this->hasOne(RunningBalance::class);
     }
 }

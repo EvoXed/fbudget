@@ -18,7 +18,7 @@ class Controller extends BaseController
     {
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
-            $this->userId = Auth::user()->getAuthIdentifier();
+            $this->userId = Auth::id();
 
             return $next($request);
         });

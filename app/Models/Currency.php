@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,16 +10,16 @@ class Currency extends Model
 
     public function expenses()
     {
-        return $this->hasMany('App\Account');
+        return $this->hasMany(Account::class);
     }
 
     public function account()
     {
-        return $this->hasMany('App\Account');
+        return $this->hasMany(Account::class);
     }
 
     public function exchangeRate()
     {
-        return $this->hasMany('App\CurrencyExchangeRate');
+        return $this->hasMany(CurrencyExchangeRate::class);
     }
 }
